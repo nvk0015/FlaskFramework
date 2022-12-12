@@ -11,3 +11,5 @@ WSSGI is a standard protocol to communicate between the web application and its 
 Jinha2: 
 It is a web templating system. It basically combines a web template along with a certain data source. It allows to render dynamic pages. 
 Some examples for data sources could be Databases, or Machine learning pickle files. 
+
+Building Url dynamically
