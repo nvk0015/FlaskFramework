@@ -1,0 +1,69 @@
+## Integrating HTML with Flask
+## HTTP verbs GET and POST
+
+#Jinja2 template
+'''
+{%...%} --> statements
+{{ }} --> expressions to print outputs
+{#...#} --> this is used for comments
+'''
+
+from flask import Flask, redirect, url_for, render_template, request
+
+#render_template is used to render HTML files with flask
+app =Flask(__name__)
+
+@app.route('/')
+def welcome():
+    return render_template('index.html')
+
+@app.route('/success/<int:score>')
+def success(score):
+    res=""
+    if score>=50:
+        res = "PASS"
+    else:
+        res="Fail"
+    return render_template('result.html', result = res)
+
+@app.route('/fail/<int:score>')
+def fail(score):
+    res=""
+    if score>=50:
+        res = "PASS"
+    else:
+        res="Fail"
+    return render_template('result.html', result = res)
+
+#result checker
+@app.route('/result/<int:marks>')
+def result(marks):
+    result = ''
+    if marks<50:
+        result = 'fail'
+    else:
+        result = 'success'
+    return redirect(url_for(result, score=marks)) 
+
+#result checker HTML page using the HTML verbs GET and POST
+@app.route('/submit', methods=['POST','GET'])
+def submit():
+    total_score = 0
+    #the strings inside the request.form should be matching the strings in the html file.
+    if request.method=='POST':
+        science = float(request.form['science'])
+        maths = float(request.form['maths'])
+        c = float(request.form['c'])
+        data_science = float(request.form['datascience'])
+        total_score=(science+maths+c+data_science)/4
+    res = ""
+    if total_score>50:
+        res = "success"
+    else:
+        res = "fail"
+    return redirect(url_for(res,score=total_score)) #this does the dynamic url generation
+    
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
